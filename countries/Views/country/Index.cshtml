@@ -1,0 +1,76 @@
+﻿@model IEnumerable<countries.Models.country>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.countryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.languageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.createdDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.countryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.languageName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.createdDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script>
+    $(function () {
+        $.ajax({
+            method: "Get",
+            url: "http://localhost:8547/api/employees",
+            //data
+            //, dataType,
+            //accepts
+            success: function (data) {
+                //alert(JSON.stringify(data));
+                for (let x = 0; x < data.length; x++) {
+
+                    var appendRowTxt = `<tr id='emp${data[x].Id}'>
+                                            <td>${data[x].Id}</td>
+                                            <td>${data[x].Name}</td>
+                                            <td>${data[x].Salary}</td>
+                                            <td>${data[x].DeptId}</td>
+                                            </tr>`
+
+                    $("#emps").append(appendRowTxt);
+
+
+
+                    $("#ddlEmps").append("<option id='optionEmp" + data[x].Id + "' value='" + data[x].Id + "'>" + data[x].Name + "</option>")
+
+                }
+            },
+            error: function (err) {
+                //alert(err.responseText);
+                alert(err.statusCode());
+            }
+        });
+    })
+</script>

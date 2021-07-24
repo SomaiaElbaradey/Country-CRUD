@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<form>
+    <input type="text" name="username" placeholder="username" />
+    <input type="password" name="password" placeholder="password" />
+</form>
+<input type="submit" onclick="login()" />
+
+@section Scripts {
+    <script>
+        function login() {
+            var user = {
+                "userName": $("[name='username']").val(),
+                "password": $("[name='password']").val(),
+            }
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "https://demotestapi.catalist-me.com/api/Login/UserSignIn" ,
+                    dataType: "Aplication/Json",
+                    data: user,
+                    statusCode: {
+                        200: function (data) {
+                            console.log("suuccess")
+                            alert(data)
+                        },
+                        400: function (err) {
+                            console.log("fail")
+                            alert(err.responseText)
+                        },
+                        
+                    },
+                }
+            )
+        }
+    </script>
+}
