@@ -1,0 +1,69 @@
+﻿body {
+    background-color: #451549;
+}
+.navbar {
+    background-color: #7b537e;
+    color: #744e77;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    background-color: #744e77;
+    color: #f0eef0;
+}
+.login-coontainer {
+    width: 35vw;
+    margin: 0 auto;
+    background-color: #f2f2f2;
+    margin-top: 20vh;
+}
+
+.login-header {
+    background-color: #7b537e;
+    height: 70px
+}
+    .login-header h1 {
+        font-size: 21px;
+        padding: 3%;
+        color: #ffffff
+    }
+
+.username-login {
+    background-color: #f0eef0;
+    width: 90%;
+    margin: 7% 5%;
+    height: 50px;
+    border: #d3d3d3 solid;
+}
+
+.password-login {
+    background-color: #f0eef0;
+    width: 90%;
+    margin: auto 5%;
+    height: 50px;
+    margin-bottom: 7%;
+    border: #d3d3d3 solid;
+}
+
+.login-footer {
+    height: 50px;
+}
+
+    .login-footer a {
+        font-size: 19px;
+        padding: 2% 5%;
+        color: #ffffff!important;
+        margin-left: 5%;
+        background-color: #7b537e;
+        border-radius: 5%;
+    }
+    .login-footer a:hover{
+        cursor: pointer;
+    }
+    .login-footer span {
+        margin-left: 10%;
+        color: #999999;
+        font-weight: 600;
+    }

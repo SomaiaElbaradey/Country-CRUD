@@ -1,36 +1,44 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-
-<form>
-    <input type="text" name="username" placeholder="username" />
-    <input type="password" name="password" placeholder="password" />
-</form>
-<input type="submit" onclick="login()" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<div class="container">
+    <div class="login-coontainer">
+        <div class="login-header">
+            <h1>Login Form</h1>
+        </div>
+        <input class="username-login" type="text" name="username" placeholder="username" />
+        <input class="password-login" type="password" name="password" placeholder="password" />
+        <div class="login-footer">
+            <a onclick="login()">Sign In</a>
+            <span>Lost Your Password?</span>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
         function login() {
-            var user = {
-                "userName": $("[name='username']").val(),
-                "password": $("[name='password']").val(),
-            }
+            var name = $("[name='username']").val();
+            var password = $("[name='password']").val();
+            var user = { userName: name, password: password };
             $.ajax(
                 {
                     type: "POST",
-                    url: "https://demotestapi.catalist-me.com/api/Login/UserSignIn" ,
-                    dataType: "Aplication/Json",
-                    data: user,
+                    url: "https://demotestapi.catalist-me.com/api/Login/UserSignIn",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(user),
                     statusCode: {
                         200: function (data) {
-                            console.log("suuccess")
-                            alert(data)
+                            if (!data.response.accessToken)
+                                alert("Wrong username or password")
+                            console.log(data.response.accessToken)
                         },
                         400: function (err) {
-                            console.log("fail")
                             alert(err.responseText)
                         },
-                        
+
                     },
                 }
             )
