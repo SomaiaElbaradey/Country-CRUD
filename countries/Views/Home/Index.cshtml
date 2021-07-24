@@ -2,14 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center greetings m-4">
-    <h1 class="text-light">Welcome</h1>
-    <p class="text-light">Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="home">
+    <div class="text-center greetings m-4">
+        <h1 class="text-light">Welcome to Worldwide</h1>
+    </div>
+    <br />
+    <div class="text-center m-4">
+        <a id="login" class="btn-style" onclick="login()">Login</a>
+        <a id="countries" class="btn-style" onclick="getAll()">All Countries</a>
+    </div>
+    <img src="~/css/worldwide.png" width="60%"/>
 </div>
-<div class="text-center m-4">
-    <a id="login" class="btn-style" onclick="login()">Login</a>
-    <a id="countries" class="btn-style" onclick="getAll()">All Countries</a>
-</div>
+
 
 @section Scripts {
     <script>

@@ -1,4 +1,4 @@
-﻿<h1 class="text-light">All Countries:</h1>
+﻿<h1 class="text-light m-4">All Countries <i class="fas fa-globe-americas"></i></h1>
 <table class="table">
     <thead>
         <tr>
@@ -38,7 +38,7 @@
                                                             <td class="text-light">${countries[i].countryName}</td>
                                                             <td class="text-light">${countries[i].languageName}</td>
                                                             <td data-assigned-id='${countries[i].id}' class="text-light" onClick="deleteCountry(this)"><i class="fas fa-trash-alt"></i></td>
-                                                            <td data-assigned-id='${countries[i].id}' class="text-light" onClick="editCountry(this)">Edit</td>
+                                                            <td data-assigned-id='${countries[i].id}' class="text-light" onClick="editCountry(this)"><i class="fas fa-edit"></i></td>
                                                         </tr>`
 
                         $("#allCountries").append(appendRowTxt);
