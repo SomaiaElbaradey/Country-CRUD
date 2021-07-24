@@ -11,11 +11,10 @@ namespace countries.Controllers
     {
         public IActionResult Index()
         {
-            IEnumerable<country> countries;
             return View();
         }
         public IActionResult Edit()
-        {
+        {           
             return View();
         }
         public IActionResult Create()

@@ -10,7 +10,7 @@
         <input class="username-login" type="text" name="username" placeholder="username" />
         <input class="password-login" type="password" name="password" placeholder="password" />
         <div class="login-footer">
-            <a onclick="login()">Sign In</a>
+            <a class="btn-style" onclick="login()">Sign In</a>
             <span>Lost Your Password?</span>
         </div>
     </div>
@@ -34,6 +34,8 @@
                             if (!data.response.accessToken)
                                 alert("Wrong username or password")
                             console.log(data.response.accessToken)
+                            window.localStorage.setItem("accessToken", data.response.accessToken);
+                            window.location.href = '/country/Index';
                         },
                         400: function (err) {
                             alert(err.responseText)

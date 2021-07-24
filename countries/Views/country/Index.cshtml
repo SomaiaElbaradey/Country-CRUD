@@ -1,76 +1,88 @@
-﻿@model IEnumerable<countries.Models.country>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+﻿<h1 class="text-light">All Countries:</h1>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.countryName)
+            <th class="text-light">
+                Country Name
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.languageName)
+            <th class="text-light">
+                Language Name
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.createdDate)
-            </th>
-            <th></th>
+            <th class="text-light"></th>
+            <th class="text-light"></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.countryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.languageName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.createdDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+    <tbody id="allCountries">
     </tbody>
 </table>
+<p>
+    <a asp-action="Create" class="create-btn">Add Country</a>
+</p>
+@section Scripts {
+    <script>
+        var accessToken = window.localStorage.getItem('accessToken');
+        $(function () {
+            $.ajax({
+                method: "Get",
+                url: "https://demotestapi.catalist-me.com/api/Country/GetAllCountries",
+                beforeSend: function (request) {
+                    request.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+                },
+                success: function (data) {
+                    if (!data.response)
+                        alert("Not allowed operation!")
+                    let countries = data.response.countries;
+                    console.log(countries);
+                    for (let i = 0; i < countries.length; i++) {
+                        var appendRowTxt = `<tr id='${countries[i].id}'>
+                                                            <td class="text-light">${countries[i].countryName}</td>
+                                                            <td class="text-light">${countries[i].languageName}</td>
+                                                            <td data-assigned-id='${countries[i].id}' class="text-light" onClick="deleteCountry(this)">Delete</td>
+                                                            <td data-assigned-id='${countries[i].id}' class="text-light" onClick="editCountry(this)">Edit</td>
+                                                        </tr>`
 
-<script>
-    $(function () {
-        $.ajax({
-            method: "Get",
-            url: "http://localhost:8547/api/employees",
-            //data
-            //, dataType,
-            //accepts
-            success: function (data) {
-                //alert(JSON.stringify(data));
-                for (let x = 0; x < data.length; x++) {
-
-                    var appendRowTxt = `<tr id='emp${data[x].Id}'>
-                                            <td>${data[x].Id}</td>
-                                            <td>${data[x].Name}</td>
-                                            <td>${data[x].Salary}</td>
-                                            <td>${data[x].DeptId}</td>
-                                            </tr>`
-
-                    $("#emps").append(appendRowTxt);
-
-
-
-                    $("#ddlEmps").append("<option id='optionEmp" + data[x].Id + "' value='" + data[x].Id + "'>" + data[x].Name + "</option>")
-
+                        $("#allCountries").append(appendRowTxt);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    alert(err.responseText);
                 }
-            },
-            error: function (err) {
-                //alert(err.responseText);
-                alert(err.statusCode());
+            });
+        })
+
+        function deleteCountry(elem) {
+            var id = $(elem).data('assigned-id');
+            var accessToken = window.localStorage.getItem('accessToken');
+            if (confirm("Are you sure you to delete this countey?")) {
+                $.ajax(
+                    {
+                        type: "DELETE",
+                        url: `https://demotestapi.catalist-me.com/api/Country/DeleteCountry?CountryID=${id}`,
+                        beforeSend: function (request) {
+                            request.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        statusCode: {
+                            200: function (data) {
+                                if (!data)
+                                    alert("Not allowed operation!")
+                                console.log(data.message)
+                                window.location.href = '/country/Index';
+                            },
+                            400: function (err) {
+                                alert(err.responseText)
+                            },
+                        },
+                    }
+                )
             }
-        });
-    })
-</script>
+        }
+
+        function editCountry(elem) {
+            var id = $(elem).data('assigned-id');
+            window.location.href = `/country/edit/id?${id}`;
+        }
+    </script>
+}

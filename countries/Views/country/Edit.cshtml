@@ -1,37 +1,81 @@
 ﻿@model countries.Models.country
 
-<h4>country</h4>
+<h3 class="text-light">country</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="View1">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="countryName" class="control-label"></label>
-                <input asp-for="countryName" class="form-control" />
+                <label asp-for="countryName" class="control-label text-light">Country Name</label>
+                <input asp-for="countryName" class="form-control" name="name"/>
                 <span asp-validation-for="countryName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="languageName" class="control-label"></label>
-                <input asp-for="languageName" class="form-control" />
+                <label asp-for="languageName" class="control-label text-light">Language Name</label>
+                <input asp-for="languageName" class="form-control" name="language"/>
                 <span asp-validation-for="languageName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="createdDate" class="control-label"></label>
-                <input asp-for="createdDate" class="form-control" />
-                <span asp-validation-for="createdDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
         </form>
+        <div class="form-group">
+            <input type="submit" value="Edit" onclick="editCountry()" class="btn-style" />
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        var accessToken = window.localStorage.getItem('accessToken');
+        $(function () {
+            $.ajax({
+                method: "Get",
+                url: `https://demotestapi.catalist-me.com/api/Country/GetAllCountries/?CountryID=${window.location.search.substring(1)}`,
+                beforeSend: function (request) {
+                    request.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+                },
+                success: function (data) {
+                    if (!data.response)
+                        alert("Not allowed operation!")
+                    let country = data.response.countries;
+                    $("[name='name']").val(country[0].countryName);
+                    $("[name='language']").val(country[0].languageName);
+                },
+                error: function (err) {
+                    console.log(err);
+                    alert(err.responseText);
+                }
+            });
+        })
+        function editCountry() {
+            var language = $("[name='language']").val();
+            var country = $("[name='name']").val();
+            var id = window.location.search.substring(1);
+            var theCountry = { countryName: country, languageName: language, countryID: parseInt(id, 10), active: true };
+            console.log(theCountry)
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "https://demotestapi.catalist-me.com/api/Country/UpdateCountry",
+                    beforeSend: function (request) {
+                        request.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(theCountry),
+                    statusCode: {
+                        200: function (data) {
+                            if (!data)
+                                alert("Not allowed operation!")
+                            console.log(data)
+                            window.location.href = '/country/Index';
+                        },
+                        400: function (err) {
+                            alert(err.responseText)
+                        },
+                    },
+                }
+            )
+        }
+
+    </script>
 }
